@@ -13,5 +13,6 @@ bind:
 bind_key_directory:
   file.directory:
     - name: {{ key_directory }}
+    - user: {{ map.user }}
     - require:
       - pkg: bind
