@@ -297,7 +297,7 @@ zsk-{{ zone }}:
     - cwd: {{ key_directory }}
     - name: dnssec-keygen -a {{ key_algorithm }} -b {{ key_size }} -n ZONE {{ zone }}
     - runas: {{ map.user }}
-    - unless: "grep {{ key_flags.zsk }} {{ key_directory }}/K{{ zone }}.+{{ key_algorithm_field }}+*.key"
+    - unless: "grep {{ key_flags.zsk }} {{ key_directory }}/K{{ zone.rstrip('.') }}.+{{ key_algorithm_field }}+*.key"
     - require:
       - file: bind_key_directory
 
@@ -306,7 +306,7 @@ ksk-{{ zone }}:
     - cwd: {{ key_directory }}
     - name: dnssec-keygen -f KSK -a {{ key_algorithm }} -b {{ key_size }} -n ZONE {{ zone }}
     - runas: {{ map.user }}
-    - unless: "grep {{ key_flags.ksk }} {{ key_directory }}/K{{ zone }}.+{{ key_algorithm_field }}+*.key"
+    - unless: "grep {{ key_flags.ksk }} {{ key_directory }}/K{{ zone.rstrip('.') }}.+{{ key_algorithm_field }}+*.key"
     - require:
       - file: bind_key_directory
 {% endif %}
