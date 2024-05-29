@@ -78,6 +78,7 @@ bind_config:
     - mode: {{ salt['pillar.get']('bind:config:mode', map.mode) }}
     - context:
         map: {{ map }}
+        key_directory: {{ key_directory }}
     - require:
       - pkg: bind
     - watch_in:
