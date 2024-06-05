@@ -44,9 +44,10 @@ bind_restart:
 named_directory:
   file.directory:
     - name: {{ map.named_directory }}
-    - user: {{ salt['pillar.get']('bind:config:user', map.user) }}
+    #- user: {{ salt['pillar.get']('bind:config:user', map.user) }}
+    - user: root
     - group: {{ salt['pillar.get']('bind:config:group', map.group) }}
-    - mode: 775
+    - mode: 1770
     - makedirs: True
     - require:
       - pkg: bind
@@ -295,7 +296,7 @@ signed{{ dash_view }}-{{ zone }}:
 {% if zone_data['auto-dnssec'] is defined -%}
 zsk-{{ zone }}:
   cmd.run:
-    - cwd: {{ key_directory }}
+    - cwd: {{ key_directory | default(map.named_directory) }}
     - name: dnssec-keygen -a {{ key_algorithm }} -b {{ key_size }} -n ZONE {{ zone }}
     - runas: {{ map.user }}
     - unless: "grep {{ key_flags.zsk }} {{ key_directory }}/K{{ zone.rstrip('.') }}.+{{ key_algorithm_field }}+*.key"
@@ -304,7 +305,7 @@ zsk-{{ zone }}:
 
 ksk-{{ zone }}:
   cmd.run:
-    - cwd: {{ key_directory }}
+    - cwd: {{ key_directory | default(map.named_directory) }}
     - name: dnssec-keygen -f KSK -a {{ key_algorithm }} -b {{ key_size }} -n ZONE {{ zone }}
     - runas: {{ map.user }}
     - unless: "grep {{ key_flags.ksk }} {{ key_directory }}/K{{ zone.rstrip('.') }}.+{{ key_algorithm_field }}+*.key"

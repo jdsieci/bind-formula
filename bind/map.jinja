@@ -28,22 +28,52 @@
           'querylog': 'no'
         }
     },
-    'RedHat': {
+    'RedHat': salt['grains.filter_by']({
+      9: {
         'pkgs': ['bind'],
         'service': 'named',
-        'config_source_dir': 'bind/files/redhat',
+        'config_source_dir': 'bind/files/redhat/9',
         'zones_source_dir': 'zones',
         'config': '/etc/named.conf',
         'local_config': '/etc/named.conf.local',
         'default_config': '/etc/sysconfig/named',
         'named_directory': '/var/named',
+        'zones_directory': '/var/bind/zones',
         'chroot_dir': '',
         'log_dir': '/var/named/data',
         'log_mode': '640',
         'user': 'named',
         'group': 'named',
         'mode': '640',
-        'key_directory': '/etc/named.keys',
+        'key_directory': '/var/bind/keys',
+        'key_algorithm': 'RSASHA256',
+        'key_algorithm_field': '008',
+        'key_size': '4096',
+        'options': {
+          'listen-on': 'port 53 { 127.0.0.1; }',
+          'listen-on-v6': 'port 53 { ::1; }',
+          'allow-query': '{ localhost; }',
+          'recursion': 'yes',
+          'dnssec-validation': 'yes',
+        }
+      },
+      'default': {
+        'pkgs': ['bind'],
+        'service': 'named',
+        'config_source_dir': 'bind/files/redhat/8',
+        'zones_source_dir': 'zones',
+        'config': '/etc/named.conf',
+        'local_config': '/etc/named.conf.local',
+        'default_config': '/etc/sysconfig/named',
+        'named_directory': '/var/named',
+        'zones_directory': '/var/bind/zones',
+        'chroot_dir': '',
+        'log_dir': '/var/named/data',
+        'log_mode': '640',
+        'user': 'named',
+        'group': 'named',
+        'mode': '640',
+        'key_directory': '/var/bind/keys',
         'key_algorithm': 'RSASHA256',
         'key_algorithm_field': '008',
         'key_size': '4096',
@@ -55,7 +85,8 @@
           'dnssec-enable': 'yes',
           'dnssec-validation': 'yes',
         }
-    },
+      }
+    }, grain='osmajorrelease', default='default'),
     'Arch': {
         'pkgs': ['bind', 'bind-tools', 'dnssec-tools'],
         'service': 'named',
