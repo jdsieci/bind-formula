@@ -58,7 +58,7 @@ bind_zones_directory:
     - name: {{ zones_directory }}
     - user: {{ salt['pillar.get']('bind:config:user', map.user) }}
     - group: {{ salt['pillar.get']('bind:config:group', map.group) }}
-    - mode: 0770
+    - mode: 0750
     - makedirs: True
     - require:
       - pkg: bind

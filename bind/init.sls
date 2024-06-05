@@ -15,6 +15,6 @@ bind_key_directory:
     - name: {{ key_directory }}
     - user: {{ map.user }}
     - group: {{ map.group }}
-    - mode: 0770
+    - mode: 0750
     - require:
       - pkg: bind
