@@ -326,9 +326,14 @@ bind:
           mx1:                                    # A RR with multiple values can
             - 1.2.3.228                           # be written as an array
             - 1.2.3.229
+            - ttl: 1w                             # set custom ttl for record
+              value: 1.2.3.230
           cat: 2.3.4.188
           rat: 1.2.3.231
           live: 1.2.3.236
+          foo:
+            ttl: 2d
+            value: 1.2.3.240
         NS:
           '@':
             - rat

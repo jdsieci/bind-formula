@@ -35,9 +35,15 @@ $INCLUDE {{ include }}
 {%- for host, data in rrs|dictsort %}
 {%- if data is number or data is string %}
 {{ host }} {{ type }} {{ data }}
+{%- elif data is mapping %}
+{{ host }} {{ data.ttl }} {{ type }} {{ data.value }}
 {%- elif data is iterable %}
 {%- for value in data %}
+{%- if value is mapping %}
+{{ host }} {{ value.ttl }} {{ type }} {{ value.value }}
+{%- else %}
 {{ host }} {{ type }} {{ value }}
+{%- endif %}
 {%- endfor %}
 {%- endif %}
 {%- endfor %}
