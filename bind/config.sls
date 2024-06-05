@@ -20,7 +20,7 @@ include:
   file.directory:
     - user: root
     - group: {{ salt['pillar.get']('bind:config:group', map.group) }}
-    - mode: 775
+    - mode: 0770
     - require:
       - pkg: bind
 
@@ -58,7 +58,7 @@ bind_zones_directory:
     - name: {{ zones_directory }}
     - user: {{ salt['pillar.get']('bind:config:user', map.user) }}
     - group: {{ salt['pillar.get']('bind:config:group', map.group) }}
-    - mode: 775
+    - mode: 0770
     - makedirs: True
     - require:
       - pkg: bind
