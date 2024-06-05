@@ -88,7 +88,9 @@ bind_config:
 bind_local_config:
   file.managed:
     - name: {{ map.local_config }}
-    - source: salt://bind/files/named.conf.local.jinja
+    - source:
+        - 'salt://{{ map.config_source_dir }}/named.conf.local.jinja'
+        - salt://bind/files/named.conf.local.jinja
     - template: jinja
     - user: {{ salt['pillar.get']('bind:config:user', map.user) }}
     - group: {{ salt['pillar.get']('bind:config:group', map.group) }}
